@@ -12,6 +12,8 @@
         "indent": ["error", 4],
         "semi-style": ["warn", "last"],
         "comma-dangle": "off",
-        "semi": ["error", "always"]
+        "semi": ["error", "always"],
+        "camelcase": "off",
+        "no-unused-vars": "off"
     }
 }
