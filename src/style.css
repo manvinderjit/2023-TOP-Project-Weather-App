@@ -1,0 +1,37 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    margin: 0 auto;
+    height: 500px;
+    width: 1220px;
+    background-color: cadetblue;
+}
+
+#get-weather-data {
+    margin: 0 auto;
+    max-width: 600px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#get-weather-data > div {
+    margin: 1rem;
+    display: flex;
+    gap: 2rem;    
+}
+
+input {
+    height: 1.5rem;    
+    width: 10rem;
+    border-radius: 0.4rem;
+    border: none;
+}
+
+button {
+    height: 1.5rem;
+    width: 7rem;
+    font-weight: 500;
+}
