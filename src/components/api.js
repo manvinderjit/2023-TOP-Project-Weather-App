@@ -1,14 +1,18 @@
 const getWeatherData = async (location = 'toronto') => {
     const respone = await fetch(`http://api.weatherapi.com/v1/current.json?key=${process.env.API_KEY}&q=${location}&aqi=${process.env.AQI_MODE}`, { mode: 'cors' });
-    const weatherData = await respone.json();
-    return weatherData;
+    if (respone.ok) {
+        const weatherData = await respone.json();
+        return weatherData;
+    } else {
+        throw new Error('Something went wrong!');
+    }
 };
 
-const processWeatherData = (_weatherData) => {
-    console.log(_weatherData);
+const fetchWeatherData = async (_location) => {
+    const _weatherData = await getWeatherData(_location);
     const { name, region, country } = _weatherData.location;
     const { temp_c, temp_f, feelslike_c, feelslike_f } = _weatherData.current;
     return { name, region, country, temp_c, temp_f, feelslike_c, feelslike_f };
 };
 
-export { getWeatherData, processWeatherData };
+export { fetchWeatherData };

@@ -1,4 +1,4 @@
-import { getWeatherData } from '../components/api';
+import { fetchWeatherData } from '../components/api.js';
 
 const homeContent = () => {
     createMainElement();
@@ -22,6 +22,7 @@ const createWeatherForm = () => {
 const createFormItems = () => {
     const formItemWrapper = document.createElement('div');
     const searchInput = document.createElement('input');
+    searchInput.id = 'location';
     searchInput.type = 'search';
     formItemWrapper.appendChild(searchInput);
     const searchSubmitButton = document.createElement('button');
@@ -34,7 +35,9 @@ const createFormItems = () => {
 const submitFormBehavior = () => {
     const formElement = document.getElementById('get-weather-data');
     formElement.addEventListener('submit', (event) => {
-        console.log('submitted');
+        const location = document.getElementById('location').value;
+        const data = fetchWeatherData(location);
+        console.log(data);
         event.preventDefault();
     });
 };
