@@ -1,4 +1,4 @@
 import { homeContent } from './modules/home.js';
 import './style.css';
 
-window.craeteHomeContet = homeContent;
+window.createHomeContent = homeContent;

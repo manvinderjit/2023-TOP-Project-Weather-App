@@ -50,11 +50,10 @@ const homeContent = (() => {
         const toggleTemperatureCheckbox = document.createElement('input');
         toggleTemperatureCheckbox.type = 'checkbox';
         toggleTemperatureCheckbox.id = 'temp-unit';
-        toggleTemperatureWrapper.appendChild(toggleTemperatureCheckbox);
-
         toggleTemperatureCheckbox.addEventListener('change', () => {
             populateTemperatureFields(weatherData);
         });
+        toggleTemperatureWrapper.appendChild(toggleTemperatureCheckbox);
 
         const toggleTemperatureSpan = document.createElement('span');
         toggleTemperatureSpan.classList.add('slider', 'round');
