@@ -5,6 +5,25 @@ const homeContent = (() => {
 
     let weatherData;
 
+    const createHeader = () => {
+        const headerElement = document.createElement('header');
+        document.body.appendChild(headerElement);
+
+        const headerContent = createHeaderContent();
+        headerElement.appendChild(headerContent);
+    };
+
+    const createHeaderContent = () => {
+        const headerLogoSection = document.createElement('div');
+        headerLogoSection.id = 'logo-container';
+
+        const headerLogo = document.createElement('p');
+        headerLogo.textContent = "Manvinderjit's Weather App";
+        headerLogoSection.appendChild(headerLogo);
+
+        return headerLogoSection;
+    };
+
     const createMainElement = () => {
         const mainElement = document.createElement('main');
         document.body.appendChild(mainElement);
@@ -18,6 +37,7 @@ const homeContent = (() => {
         formElement.appendChild(formItems);
 
         document.querySelector('main').appendChild(formElement);
+        submitFormBehavior();
     };
 
     const createFormItems = () => {
@@ -32,10 +52,6 @@ const homeContent = (() => {
         searchSubmitButton.type = 'submit';
         searchSubmitButton.textContent = 'Search';
         formItemWrapper.appendChild(searchSubmitButton);
-
-        const toggleTemperatureSliderContainer = createToggleSwitch();
-
-        formItemWrapper.appendChild(toggleTemperatureSliderContainer);
 
         return formItemWrapper;
     };
@@ -66,7 +82,8 @@ const homeContent = (() => {
         temperatureUnitLabel.textContent = 'Change Unit';
         toggleTemperatureSliderContainer.appendChild(temperatureUnitLabel);
 
-        return toggleTemperatureSliderContainer;
+        const mainElement = document.querySelector('main');
+        mainElement.appendChild(toggleTemperatureSliderContainer);
     };
 
     const submitFormBehavior = () => {
@@ -136,16 +153,28 @@ const homeContent = (() => {
     const populateTemperatureFields = (data) => {
         const toggleTemperatureCheckboxStatus = document.getElementById('temp-unit').checked;
         const locationTemp = document.getElementById('current-temperature');
-        locationTemp.textContent = toggleTemperatureCheckboxStatus ? data.temp_f : data.temp_c;
+        locationTemp.textContent = toggleTemperatureCheckboxStatus ? `${data.temp_f}\u00B0F` : `${data.temp_c}\u00B0C`;
         const displayFeelsLike = document.getElementById('feels-like');
-        displayFeelsLike.textContent = toggleTemperatureCheckboxStatus ? data.feelslike_f : data.feelslike_c;
+        displayFeelsLike.textContent = toggleTemperatureCheckboxStatus ? `Feels Like: ${data.feelslike_f}\u00B0F` : `Feels Like: ${data.feelslike_c}\u00B0C`;
     };
 
+    const createFooter = () => {
+        const footerElement = document.createElement('footer');
+
+        const footerText = document.createElement('p');
+        footerText.textContent = '\u00A9 Manvinderjit 2023';
+        footerElement.appendChild(footerText);
+
+        document.body.appendChild(footerElement);
+    };
+
+    createHeader();
     createMainElement();
     createWeatherForm();
-    submitFormBehavior();
+    createToggleSwitch();
     createWeatherDisplay();
     populateWeatherDisplay();
+    createFooter();
 })();
 
 export { homeContent };

@@ -1,13 +1,47 @@
+:root {
+    --color-background-theme-dark: rgb(34, 40, 49);
+    --color-background-theme-light: rgb(221, 221, 221);
+    --color-text-red: rgb(240, 84, 84);
+    --color-text-blue: rgb(48, 71, 94);
+    --color-text-light-gray: rgb(221, 221, 221);
+}
+
 body {
-    margin: 0;
+    font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 0 auto;
     padding: 0;
+    width: 1220px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    height: 5rem;
+    background-color: var(--color-background-theme-dark);
+    color: var(--color-text-red);
+}
+
+#logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+#logo-container > p {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 500;
 }
 
 main {
-    margin: 0 auto;
-    height: 500px;
-    width: 1220px;
-    background-color: cadetblue;
+    background-color: var(--color-background-theme-light);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    height: 100%;
+    padding: 2rem;
 }
 
 #get-weather-data {
@@ -85,11 +119,11 @@ button {
 }
 
 input:checked + .slider {
-    background-color: #2196F3;
+    background-color: var(--color-text-red);
 }
 
-input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
+input:focus + .slider, input:hover, span:hover, button:focus, button:hover {
+    box-shadow: 0 0 3px var(--color-text-red);
 }
 
 input:checked + .slider:before {
@@ -108,13 +142,10 @@ input:checked + .slider:before {
 }
 
 .display-header {
-    display: flex;
-    justify-content: space-evenly;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
 }
-
-/* .display-header > * {
-    flex-grow: 1;
-} */
 
 #display-wrapper {
     width: 400px;
@@ -129,6 +160,15 @@ input:checked + .slider:before {
 }
 
 #display-subheader {
-    display: flex;
-    justify-content: space-evenly;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
+}
+
+footer {
+    height: 4rem;
+    background-color: var(--color-background-theme-dark);
+    margin-top: auto;
+    color: var(--color-text-red);
+    text-align: center;
 }
