@@ -1,11 +1,13 @@
 import { fetchWeatherData } from '../components/api.js';
 
+let weatherData;
+
 const homeContent = () => {
     createMainElement();
     createWeatherForm();
     submitFormBehavior();
     createWeatherDisplay();
-    populateWeatherDisplay();
+    // populateWeatherDisplay();
 };
 
 const createMainElement = () => {
@@ -16,22 +18,61 @@ const createMainElement = () => {
 const createWeatherForm = () => {
     const formElement = document.createElement('form');
     formElement.id = 'get-weather-data';
+
     const formItems = createFormItems();
     formElement.appendChild(formItems);
+
     document.querySelector('main').appendChild(formElement);
 };
 
 const createFormItems = () => {
     const formItemWrapper = document.createElement('div');
+
     const searchInput = document.createElement('input');
-    searchInput.id = 'location';
     searchInput.type = 'search';
+    searchInput.id = 'location';
     formItemWrapper.appendChild(searchInput);
+
     const searchSubmitButton = document.createElement('button');
     searchSubmitButton.type = 'submit';
     searchSubmitButton.textContent = 'Search';
     formItemWrapper.appendChild(searchSubmitButton);
+
+    const toggleTemperatureSliderContainer = createToggleSwitch();
+
+    formItemWrapper.appendChild(toggleTemperatureSliderContainer);
+
     return formItemWrapper;
+};
+
+const createToggleSwitch = () => {
+    const toggleTemperatureSliderContainer = document.createElement('div');
+    toggleTemperatureSliderContainer.classList.add('slider-container');
+
+    const toggleTemperatureWrapper = document.createElement('label');
+    toggleTemperatureWrapper.classList.add('switch');
+
+    const toggleTemperatureCheckbox = document.createElement('input');
+    toggleTemperatureCheckbox.type = 'checkbox';
+    toggleTemperatureCheckbox.id = 'temp-unit';
+    toggleTemperatureWrapper.appendChild(toggleTemperatureCheckbox);
+
+    toggleTemperatureCheckbox.addEventListener('change', () => {
+        console.log(toggleTemperatureCheckbox.checked);
+    });
+
+    const toggleTemperatureSpan = document.createElement('span');
+    toggleTemperatureSpan.classList.add('slider', 'round');
+    toggleTemperatureWrapper.appendChild(toggleTemperatureSpan);
+
+    toggleTemperatureSliderContainer.appendChild(toggleTemperatureWrapper);
+
+    const temperatureUnitLabel = document.createElement('label');
+    temperatureUnitLabel.id = 'label-temp-unit';
+    temperatureUnitLabel.textContent = 'Change Unit';
+    toggleTemperatureSliderContainer.appendChild(temperatureUnitLabel);
+
+    return toggleTemperatureSliderContainer;
 };
 
 const submitFormBehavior = () => {
@@ -68,11 +109,6 @@ const createWeatherDisplayHeader = () => {
     displayCurrentTemperature.id = 'current-temperature';
     displayHeader.appendChild(displayCurrentTemperature);
 
-    // const toggleTemperature = document.createElement('div');
-    // toggleTemperature.id = 'toggle-temperature';
-    // toggleTemperature.textContent = 'To F';
-    // displayHeader.appendChild(toggleTemperature);
-
     return displayHeader;
 };
 
@@ -93,19 +129,25 @@ const createWeatherDisplaySubheader = () => {
 
 const populateWeatherDisplay = async (location) => {
     const data = await fetchWeatherData(location);
-    console.log(data);
+
     const locationName = document.getElementById('current-location');
     locationName.textContent = data.name;
-    const locationTemp = document.getElementById('current-temperature');
-    locationTemp.textContent = data.temp_c;
+
     const displayRegion = document.getElementById('display-region');
     displayRegion.textContent = `${data.region}, ${data.country}`;
-    const displayFeelsLike = document.getElementById('feels-like');
-    displayFeelsLike.textContent = `Feels Like: ${data.feelslike_c}`;
+
+    populateTemperatureFields(data);
 };
 
 const switchTemperatureUnit = () => {
+};
 
+const populateTemperatureFields = (data) => {
+    const toggleTemperatureCheckboxStatus = document.getElementById('temp-unit').checked;
+    const locationTemp = document.getElementById('current-temperature');
+    locationTemp.textContent = toggleTemperatureCheckboxStatus ? data.temp_f : data.temp_c;
+    const displayFeelsLike = document.getElementById('feels-like');
+    displayFeelsLike.textContent = toggleTemperatureCheckboxStatus ? data.feelslike_f : data.feelslike_c;
 };
 
 export { homeContent };
