@@ -139,7 +139,11 @@ const homeContent = (() => {
     };
 
     const populateWeatherDisplay = async (location) => {
+        toggleLoadingSpinner();
+        toggleTemperatureDisplay();
         weatherData = await fetchWeatherData(location);
+        toggleLoadingSpinner();
+        toggleTemperatureDisplay();
 
         const locationName = document.getElementById('current-location');
         locationName.textContent = weatherData.name;
@@ -158,6 +162,24 @@ const homeContent = (() => {
         displayFeelsLike.textContent = toggleTemperatureCheckboxStatus ? `Feels Like: ${data.feelslike_f}\u00B0F` : `Feels Like: ${data.feelslike_c}\u00B0C`;
     };
 
+    const createLoadingSpinner = () => {
+        const loadingSpinner = document.createElement('div');
+        loadingSpinner.classList.add('loader', 'hidden');
+
+        const mainElement = document.querySelector('main');
+        mainElement.appendChild(loadingSpinner);
+    };
+
+    const toggleLoadingSpinner = () => {
+        const loadingSpinner = document.querySelector('.loader');
+        loadingSpinner.classList.contains('hidden') ? loadingSpinner.classList.remove('hidden') : loadingSpinner.classList.add('hidden');
+    };
+
+    const toggleTemperatureDisplay = () => {
+        const temperatureDisplayElement = document.getElementById('display-wrapper');
+        temperatureDisplayElement.classList.contains('hidden') ? temperatureDisplayElement.classList.remove('hidden') : temperatureDisplayElement.classList.add('hidden');
+    };
+
     const createFooter = () => {
         const footerElement = document.createElement('footer');
 
@@ -172,6 +194,7 @@ const homeContent = (() => {
     createMainElement();
     createWeatherForm();
     createToggleSwitch();
+    createLoadingSpinner();
     createWeatherDisplay();
     populateWeatherDisplay();
     createFooter();
