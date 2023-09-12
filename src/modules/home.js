@@ -4,6 +4,7 @@ const homeContent = (() => {
     'use strict';
 
     let weatherData;
+    const dummyData = { name: 'Toronto', region: 'Ontario', country: 'Canada', temp_c: '32', temp_f: '76.2', feelslike_c: '36.7', feelslike_f: '84' };
 
     const createHeader = () => {
         const headerElement = document.createElement('header');
@@ -89,6 +90,7 @@ const homeContent = (() => {
     const submitFormBehavior = () => {
         const formElement = document.getElementById('get-weather-data');
         formElement.addEventListener('submit', (event) => {
+            resetError();
             const location = document.getElementById('location').value;
             populateWeatherDisplay(location);
             event.preventDefault();
@@ -138,12 +140,39 @@ const homeContent = (() => {
         return displaySubheader;
     };
 
+    const createErrorElement = () => {
+        const errorElement = document.createElement('div');
+        errorElement.id = 'display-error';
+        errorElement.classList.add('hidden', 'invalid');
+        const mainElement = document.querySelector('main');
+        mainElement.appendChild(errorElement);
+    };
+
+    const showError = (error, status) => {
+        const errorElement = document.getElementById('display-error');
+        errorElement.classList.remove('hidden');
+        errorElement.textContent = `${error}, code: ${status}`;
+    };
+
+    const resetError = () => {
+        const errorElement = document.getElementById('display-error');
+        errorElement.classList.add('hidden');
+        errorElement.textContent = '';
+    };
+
     const populateWeatherDisplay = async (location) => {
-        toggleLoadingSpinner();
-        toggleTemperatureDisplay();
+        toggleLoadingSpinner(true);
+        toggleTemperatureDisplay(false);
         weatherData = await fetchWeatherData(location);
-        toggleLoadingSpinner();
-        toggleTemperatureDisplay();
+        if (weatherData.error) {
+            toggleLoadingSpinner(false);
+            toggleTemperatureDisplay(false);
+            showError(weatherData.error, weatherData.status);
+            return;
+        }
+        // weatherData = dummyData;
+        toggleLoadingSpinner(false);
+        toggleTemperatureDisplay(true);
 
         const locationName = document.getElementById('current-location');
         locationName.textContent = weatherData.name;
@@ -170,14 +199,14 @@ const homeContent = (() => {
         mainElement.appendChild(loadingSpinner);
     };
 
-    const toggleLoadingSpinner = () => {
+    const toggleLoadingSpinner = (visibilityStatus = false) => {
         const loadingSpinner = document.querySelector('.loader');
-        loadingSpinner.classList.contains('hidden') ? loadingSpinner.classList.remove('hidden') : loadingSpinner.classList.add('hidden');
+        visibilityStatus ? loadingSpinner.classList.remove('hidden') : loadingSpinner.classList.add('hidden');
     };
 
-    const toggleTemperatureDisplay = () => {
+    const toggleTemperatureDisplay = (visibilityStatus = true) => {
         const temperatureDisplayElement = document.getElementById('display-wrapper');
-        temperatureDisplayElement.classList.contains('hidden') ? temperatureDisplayElement.classList.remove('hidden') : temperatureDisplayElement.classList.add('hidden');
+        visibilityStatus ? temperatureDisplayElement.classList.remove('hidden') : temperatureDisplayElement.classList.add('hidden');
     };
 
     const createFooter = () => {
@@ -196,6 +225,7 @@ const homeContent = (() => {
     createToggleSwitch();
     createLoadingSpinner();
     createWeatherDisplay();
+    createErrorElement();
     populateWeatherDisplay();
     createFooter();
 })();

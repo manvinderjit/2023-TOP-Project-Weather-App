@@ -30,7 +30,7 @@ header {
 }
 
 #logo-container > p {
-    margin: 0;
+    margin: 0.5rem;
     font-size: 1.2rem;
     font-weight: 500;
 }
@@ -180,10 +180,14 @@ input:checked + .slider:before {
     display: none;
 }
 
-
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+/* Error Display */
+#display-error {
+    margin: 0 auto;
 }
 
 /* Footer */
@@ -193,4 +197,7 @@ footer {
     margin-top: auto;
     color: var(--color-text-red);
     text-align: center;
+}
+footer > p {
+    margin: 0.5rem;
 }
