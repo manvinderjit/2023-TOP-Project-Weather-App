@@ -29,5 +29,4 @@ const fetchWeatherData = async (_location) => {
 
 export { fetchWeatherData };
 
-// 1. Error handling and try catch
-// 2. Input validation
+// 1. Input validation

@@ -1,10 +1,10 @@
 import { fetchWeatherData } from '../components/api.js';
+import { validateInput } from '../components/validate.js';
 
 const homeContent = (() => {
     'use strict';
 
     let weatherData;
-    const dummyData = { name: 'Toronto', region: 'Ontario', country: 'Canada', temp_c: '32', temp_f: '76.2', feelslike_c: '36.7', feelslike_f: '84' };
 
     const createHeader = () => {
         const headerElement = document.createElement('header');
@@ -37,6 +37,9 @@ const homeContent = (() => {
         const formItems = createFormItems();
         formElement.appendChild(formItems);
 
+        const formErrors = createFormErrorSection();
+        formElement.appendChild(formErrors);
+
         document.querySelector('main').appendChild(formElement);
         submitFormBehavior();
     };
@@ -47,6 +50,9 @@ const homeContent = (() => {
         const searchInput = document.createElement('input');
         searchInput.type = 'search';
         searchInput.id = 'location';
+        searchInput.required = true;
+        searchInput.minLength = '2';
+        searchInput.placeholder = 'Enter location here';
         formItemWrapper.appendChild(searchInput);
 
         const searchSubmitButton = document.createElement('button');
@@ -55,6 +61,18 @@ const homeContent = (() => {
         formItemWrapper.appendChild(searchSubmitButton);
 
         return formItemWrapper;
+    };
+
+    const createFormErrorSection = () => {
+        const formErrorWrapper = document.createElement('div');
+        formErrorWrapper.id = 'display-form-errors';
+
+        const formErrorSpan = document.createElement('span');
+        formErrorSpan.classList.add('error');
+        formErrorSpan.ariaLive = 'polite';
+
+        formErrorWrapper.appendChild(formErrorSpan);
+        return formErrorWrapper;
     };
 
     const createToggleSwitch = () => {
@@ -163,6 +181,7 @@ const homeContent = (() => {
     const populateWeatherDisplay = async (location) => {
         toggleLoadingSpinner(true);
         toggleTemperatureDisplay(false);
+
         weatherData = await fetchWeatherData(location);
         if (weatherData.error) {
             toggleLoadingSpinner(false);
@@ -170,7 +189,7 @@ const homeContent = (() => {
             showError(weatherData.error, weatherData.status);
             return;
         }
-        // weatherData = dummyData;
+
         toggleLoadingSpinner(false);
         toggleTemperatureDisplay(true);
 
@@ -222,6 +241,7 @@ const homeContent = (() => {
     createHeader();
     createMainElement();
     createWeatherForm();
+    validateInput();
     createToggleSwitch();
     createLoadingSpinner();
     createWeatherDisplay();
