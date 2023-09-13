@@ -1,6 +1,6 @@
 const getWeatherData = async (location = 'toronto') => {
     try {
-        const response = await fetch(`http://api.weatherapi.com/v1/current.json?key=${process.env.API_KEY}&q=${location}&aqi=${process.env.AQI_MODE}`, { mode: 'cors' });
+        const response = await fetch(`https://api.weatherapi.com/v1/current.json?key=${process.env.API_KEY}&q=${location}&aqi=${process.env.AQI_MODE}`, { mode: 'cors', headers: { 'Access-Control-Allow-Origin': 'https://api.weatherapi.com/' } });
         if (response.status === 200) {
             const weatherData = await response.json();
             return ([response.status, weatherData]);
@@ -28,5 +28,3 @@ const fetchWeatherData = async (_location) => {
 };
 
 export { fetchWeatherData };
-
-// 1. Input validation
